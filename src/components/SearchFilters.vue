@@ -8,7 +8,9 @@ const restaurantStore = useRestaurantStore()
   <section class="search-section">
     <div class="search-header">
       <h1 class="search-title">Encontre o seu próximo prato</h1>
-      <p class="search-subtitle">Descubra restaurantes incríveis e compartilhe sua experiência com a comunidade</p>
+      <p class="search-subtitle">
+        Descubra restaurantes autênticos, auditados contra golpes e compartilhe sua experiência com a comunidade
+      </p>
     </div>
 
     <div class="search-card">
@@ -18,7 +20,7 @@ const restaurantStore = useRestaurantStore()
         <input
           v-model="restaurantStore.searchQuery"
           type="text"
-          placeholder="Buscar por nome, prato, cozinha ou cidade..."
+          placeholder="Buscar por nome, prato, cozinha, cidade ou CNPJ..."
           class="search-input"
         />
         <button
@@ -32,7 +34,7 @@ const restaurantStore = useRestaurantStore()
         </button>
       </div>
 
-      <!-- Filtros em Dropdown -->
+      <!-- Filtros em Dropdown & Filtro Anti-Golpe -->
       <div class="filters-row">
         <div class="filter-group">
           <label for="filterCuisine" class="filter-label">Tipo de Cozinha</label>
@@ -74,6 +76,24 @@ const restaurantStore = useRestaurantStore()
           </div>
         </div>
 
+        <!-- Filtro Rápido: Apenas Restaurantes Verificados (Anti-Golpe) -->
+        <div class="filter-group filter-security">
+          <label class="filter-label">Segurança & Autenticidade</label>
+          <button
+            type="button"
+            class="btn-toggle-verified"
+            :class="{ active: restaurantStore.onlyVerified }"
+            title="Exibir apenas restaurantes com CNPJ e localização auditados contra golpes"
+            @click="restaurantStore.toggleOnlyVerified()"
+          >
+            <span class="toggle-icon">🛡️</span>
+            <span class="toggle-text">
+              {{ restaurantStore.onlyVerified ? '✓ Apenas Verificados' : 'Filtrar Verificados' }}
+            </span>
+            <span class="verified-count-badge">{{ restaurantStore.verifiedCount }}</span>
+          </button>
+        </div>
+
         <!-- Botão Limpar Filtros -->
         <div v-if="restaurantStore.hasActiveFilters" class="clear-filters-wrapper">
           <button
@@ -110,7 +130,7 @@ const restaurantStore = useRestaurantStore()
 .search-subtitle {
   font-size: 1.05rem;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto;
 }
 
@@ -190,6 +210,10 @@ const restaurantStore = useRestaurantStore()
   gap: 0.4rem;
 }
 
+.filter-security {
+  min-width: 220px;
+}
+
 .filter-label {
   font-size: 0.8rem;
   font-weight: 700;
@@ -223,6 +247,52 @@ const restaurantStore = useRestaurantStore()
 .filter-select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* Botão de Filtro de Verificação Anti-Golpe */
+.btn-toggle-verified {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.625rem 0.95rem;
+  border: 1.5px solid #86efac;
+  background-color: #f0fdf4;
+  color: #166534;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-toggle-verified:hover {
+  background-color: #dcfce7;
+  border-color: #4ade80;
+  transform: translateY(-1px);
+}
+
+.btn-toggle-verified.active {
+  background-color: #15803d;
+  color: #ffffff;
+  border-color: #14532d;
+  box-shadow: 0 4px 12px rgba(22, 101, 52, 0.25);
+}
+
+.btn-toggle-verified.active .verified-count-badge {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.verified-count-badge {
+  background-color: #dcfce7;
+  color: #166534;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
 }
 
 .clear-filters-wrapper {

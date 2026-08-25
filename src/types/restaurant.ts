@@ -18,6 +18,24 @@ export interface MenuItem {
   image?: string
 }
 
+export interface FraudReport {
+  id: string
+  restaurantId: string
+  restaurantName: string
+  reporterName: string
+  reporterEmail?: string
+  reason:
+    | 'perfil_falso'
+    | 'golpe_pix'
+    | 'endereco_inexistente'
+    | 'cardapio_fraudulento'
+    | 'marca_clonada'
+    | 'outro'
+  description: string
+  createdAt: string
+  status: 'em_analise' | 'resolvido'
+}
+
 export interface Restaurant {
   id: string
   name: string
@@ -34,11 +52,22 @@ export interface Restaurant {
   website?: string
   amenities?: string[]
   menu?: MenuItem[]
+  // Campos de Segurança e Verificação Anti-Golpe
+  cnpj?: string
+  legalName?: string
+  isVerified?: boolean
+  verificationStatus?: 'verified' | 'pending' | 'unverified'
+  verifiedDate?: string
+  verifiedBy?: string
+  safetyScore?: number
+  verifiedBadges?: string[]
+  reportCount?: number
 }
 
 export interface RestaurantFilters {
   search: string
   cuisine: string
   city: string
+  onlyVerified?: boolean
 }
 

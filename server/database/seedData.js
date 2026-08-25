@@ -1,6 +1,26 @@
-import type { Restaurant } from '../types/restaurant'
+/**
+ * Dados iniciais para população do Banco de Dados MySQL
+ */
+export const SEED_USERS = [
+  {
+    id: 'user-admin',
+    name: 'Admin Guia Sabor',
+    email: 'admin@guiasabor.com.br',
+    password_hash: 'admin123',
+    role: 'admin',
+    created_at: '01/01/2026',
+  },
+  {
+    id: 'user-demo',
+    name: 'Usuário Convidado',
+    email: 'usuario@exemplo.com',
+    password_hash: '123456',
+    role: 'user',
+    created_at: '01/01/2026',
+  },
+]
 
-export const INITIAL_RESTAURANTS: Restaurant[] = [
+export const SEED_RESTAURANTS = [
   {
     id: 'rest-1',
     name: 'Cantina Bella Italia',
@@ -12,10 +32,8 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     phone: '(19) 3254-8890',
     website: 'https://cantinabellaitalia.com.br',
     image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80',
-    amenities: ['Wi-Fi Grátis', 'Ar Condicionado', 'Carta de Vinhos', 'Aceita Reservas', 'Estacionamento com Manobrista', 'Área Externa'],
     description: 'Massas artesanais frescas preparadas diariamente seguindo receitas tradicionais da Toscana em ambiente aconchegante e romântico.',
     priceRange: 'R$$$',
-    // Campos de Verificação e Segurança Anti-Golpe
     cnpj: '12.345.678/0001-95',
     legalName: 'Bella Italia Gastronomia & Vinhos Ltda.',
     isVerified: true,
@@ -23,13 +41,14 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     verifiedDate: '15/01/2026',
     verifiedBy: 'Equipe de Segurança & Compliance Guia Sabor',
     safetyScore: 99,
+    reportCount: 0,
+    amenities: ['Wi-Fi Grátis', 'Ar Condicionado', 'Carta de Vinhos', 'Aceita Reservas', 'Estacionamento com Manobrista', 'Área Externa'],
     verifiedBadges: [
       '🛡️ CNPJ Regular na Receita Federal',
       '📍 Endereço Comercial Físico Confirmado',
       '📞 Telefone Oficial de Atendimento Validado',
       '🔒 Proteção Anti-Fraude & Pagamento Seguro',
     ],
-    reportCount: 0,
     menu: [
       {
         id: 'm1-1',
@@ -113,10 +132,8 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     phone: '(11) 3145-2020',
     website: 'https://sakurasushilounge.com.br',
     image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=1200&q=80',
-    amenities: ['Wi-Fi Grátis', 'Ar Condicionado', 'Balcão Omakase', 'Carta de Sakês', 'Acessibilidade', 'Opções Veganas'],
     description: 'Experiência Omakase contemporânea com peixes frescos nobres selecionados e sushis autorais.',
     priceRange: 'R$$$$',
-    // Campos de Verificação e Segurança Anti-Golpe
     cnpj: '23.456.789/0001-95',
     legalName: 'Sakura Gastronomia Oriental & Eventos Eireli',
     isVerified: true,
@@ -124,13 +141,14 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     verifiedDate: '10/01/2026',
     verifiedBy: 'Equipe de Segurança & Compliance Guia Sabor',
     safetyScore: 100,
+    reportCount: 0,
+    amenities: ['Wi-Fi Grátis', 'Ar Condicionado', 'Balcão Omakase', 'Carta de Sakês', 'Acessibilidade', 'Opções Veganas'],
     verifiedBadges: [
       '🛡️ CNPJ Regular na Receita Federal',
       '📍 Endereço Comercial Físico Confirmado',
       '📞 Telefone Oficial de Atendimento Validado',
       '🔒 Proteção Anti-Fraude & Pagamento Seguro',
     ],
-    reportCount: 0,
     menu: [
       {
         id: 'm2-1',
@@ -205,7 +223,6 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     amenities: ['Fogão a Lenha', 'Estacionamento Próprio', 'Espaço Kids', 'Ambiente Familiar', 'Pet Friendly'],
     description: 'A autêntica culinária caipira e mineira servida em fogão a lenha com sobremesas caseiras típicas.',
     priceRange: 'R$$',
-    // Campos de Verificação e Segurança Anti-Golpe
     cnpj: '34.567.890/0001-30',
     legalName: 'Fogão de Minas Restaurante Tradicional Ltda.',
     isVerified: true,
@@ -213,13 +230,13 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     verifiedDate: '18/01/2026',
     verifiedBy: 'Equipe de Segurança & Compliance Guia Sabor',
     safetyScore: 98,
+    reportCount: 0,
     verifiedBadges: [
       '🛡️ CNPJ Regular na Receita Federal',
       '📍 Endereço Comercial Físico Confirmado',
       '📞 Telefone Oficial de Atendimento Validado',
       '🔒 Proteção Anti-Fraude & Pagamento Seguro',
     ],
-    reportCount: 0,
     menu: [
       {
         id: 'm3-1',
@@ -296,7 +313,6 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     amenities: ['Música ao Vivo / Rock', 'Wi-Fi Grátis', 'Cervejas Artesanais', 'Delivery Rápido', 'Ar Condicionado'],
     description: 'Burgers artesanais defumados na lenha de macieira com queijos fundidos e pães brioche tostados na manteiga.',
     priceRange: 'R$$',
-    // Campos de Verificação e Segurança Anti-Golpe
     cnpj: '45.678.901/0001-75',
     legalName: 'Iron Smokehouse Burger Bar & Grill Ltda.',
     isVerified: true,
@@ -304,13 +320,13 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     verifiedDate: '22/01/2026',
     verifiedBy: 'Equipe de Segurança & Compliance Guia Sabor',
     safetyScore: 98,
+    reportCount: 0,
     verifiedBadges: [
       '🛡️ CNPJ Regular na Receita Federal',
       '📍 Endereço Comercial Físico Confirmado',
       '📞 Telefone Oficial de Atendimento Validado',
       '🔒 Proteção Anti-Fraude & Pagamento Seguro',
     ],
-    reportCount: 0,
     menu: [
       {
         id: 'm4-1',
@@ -387,7 +403,6 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     amenities: ['Música Tradicional Italiana', 'Carta de Vinhos', 'Salão Clássico', 'Aceita Reservas', 'Ar Condicionado'],
     description: 'Tradição italiana centenária no coração do Bixiga com lasanhas generosas e polpetone recheado com queijo derretido.',
     priceRange: 'R$$$',
-    // Campos de Verificação e Segurança Anti-Golpe
     cnpj: '56.789.012/0001-00',
     legalName: 'Trattoria del Nonno Cantina Italiana Eireli',
     isVerified: true,
@@ -395,13 +410,13 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     verifiedDate: '05/01/2026',
     verifiedBy: 'Equipe de Segurança & Compliance Guia Sabor',
     safetyScore: 97,
+    reportCount: 0,
     verifiedBadges: [
       '🛡️ CNPJ Regular na Receita Federal',
       '📍 Endereço Comercial Físico Confirmado',
       '📞 Telefone Oficial de Atendimento Validado',
       '🔒 Proteção Anti-Fraude & Pagamento Seguro',
     ],
-    reportCount: 0,
     menu: [
       {
         id: 'm5-1',
@@ -454,7 +469,6 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     amenities: ['Música Nordestina', 'Wi-Fi Grátis', 'Ambiente Climatizado', 'Aceita Cartões e Pix', 'Espaço Aconchegante'],
     description: 'Especialidades nordestinas autênticas: baião de dois, carne de sol na nata, macaxeira frita e bobó de camarão.',
     priceRange: 'R$$',
-    // Campos de Verificação e Segurança Anti-Golpe
     cnpj: '67.890.123/0001-16',
     legalName: 'Sabor do Sertão Culinária Típica Ltda.',
     isVerified: true,
@@ -462,13 +476,13 @@ export const INITIAL_RESTAURANTS: Restaurant[] = [
     verifiedDate: '12/01/2026',
     verifiedBy: 'Equipe de Segurança & Compliance Guia Sabor',
     safetyScore: 99,
+    reportCount: 0,
     verifiedBadges: [
       '🛡️ CNPJ Regular na Receita Federal',
       '📍 Endereço Comercial Físico Confirmado',
       '📞 Telefone Oficial de Atendimento Validado',
       '🔒 Proteção Anti-Fraude & Pagamento Seguro',
     ],
-    reportCount: 0,
     menu: [
       {
         id: 'm6-1',

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { User } from '../types/auth'
+import { api } from '../services/api'
 
 const STORAGE_USER_KEY = 'guia_sabor_current_user'
 const STORAGE_USERS_KEY = 'guia_sabor_registered_users'
@@ -10,6 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
   const currentUser = ref<User | null>(null)
   const isAuthModalOpen = ref<boolean>(false)
   const authModalTab = ref<'login' | 'register'>('login')
+  const isLoading = ref<boolean>(false)
 
   // Inicializar usuário do localStorage
   try {
@@ -25,7 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => !!currentUser.value)
   const userName = computed(() => currentUser.value?.name || '')
 
-  // Recuperar lista de usuários registrados
+  // Recuperar lista de usuários registrados (fallback local)
   function getRegisteredUsers(): Array<{ id: string; name: string; email: string; passwordHash: string }> {
     try {
       const usersJson = localStorage.getItem(STORAGE_USERS_KEY)
@@ -46,13 +48,27 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // Ações
-  function login(email: string, password: string): { success: boolean; message?: string } {
+  async function login(email: string, password: string): Promise<{ success: boolean; message?: string }> {
     const cleanEmail = email.trim().toLowerCase()
+    isLoading.value = true
+
+    try {
+      // 1. Tentar autenticação via MySQL API
+      const result = await api.login(cleanEmail, password)
+      if (result.success && result.user) {
+        setCurrentUser(result.user)
+        closeAuthModal()
+        isLoading.value = false
+        return { success: true }
+      }
+    } catch (err) {
+      console.warn('Backend indisponível para login, tentando validação local...', err)
+    }
+
+    // 2. Fallback local se o servidor estiver offline
     const users = getRegisteredUsers()
-    
-    // Se não houver usuários cadastrados previamente, permitir login com credenciais de teste ou o cadastrado
     const userMatch = users.find(u => u.email.toLowerCase() === cleanEmail && u.passwordHash === password)
-    
+
     if (userMatch) {
       const loggedUser: User = {
         id: userMatch.id,
@@ -62,10 +78,11 @@ export const useAuthStore = defineStore('auth', () => {
       }
       setCurrentUser(loggedUser)
       closeAuthModal()
+      isLoading.value = false
       return { success: true }
     }
 
-    // Fallback amigável: se for uma conta padrão de demonstração
+    // Fallback de conta demo
     if (cleanEmail === 'usuario@exemplo.com' && password === '123456') {
       const demoUser: User = {
         id: 'user-demo',
@@ -75,16 +92,18 @@ export const useAuthStore = defineStore('auth', () => {
       }
       setCurrentUser(demoUser)
       closeAuthModal()
+      isLoading.value = false
       return { success: true }
     }
 
-    return { 
-      success: false, 
-      message: 'E-mail ou senha incorretos. Verifique suas credenciais ou crie uma conta.' 
+    isLoading.value = false
+    return {
+      success: false,
+      message: 'E-mail ou senha incorretos. Verifique suas credenciais ou crie uma conta.',
     }
   }
 
-  function register(name: string, email: string, password: string): { success: boolean; message?: string } {
+  async function register(name: string, email: string, password: string): Promise<{ success: boolean; message?: string }> {
     const cleanName = name.trim()
     const cleanEmail = email.trim().toLowerCase()
 
@@ -96,8 +115,28 @@ export const useAuthStore = defineStore('auth', () => {
       return { success: false, message: 'A senha deve conter no mínimo 6 caracteres.' }
     }
 
+    isLoading.value = true
+
+    try {
+      // 1. Tentar cadastro via MySQL API
+      const result = await api.register(cleanName, cleanEmail, password)
+      if (result.success && result.user) {
+        setCurrentUser(result.user)
+        closeAuthModal()
+        isLoading.value = false
+        return { success: true }
+      } else if (result.message) {
+        isLoading.value = false
+        return { success: false, message: result.message }
+      }
+    } catch (err) {
+      console.warn('Backend indisponível para cadastro, registrando localmente...', err)
+    }
+
+    // 2. Fallback local se o servidor estiver offline
     const users = getRegisteredUsers()
     if (users.some(u => u.email.toLowerCase() === cleanEmail)) {
+      isLoading.value = false
       return { success: false, message: 'Este e-mail já está cadastrado. Faça login ou use outro e-mail.' }
     }
 
@@ -119,6 +158,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
     setCurrentUser(activeUser)
     closeAuthModal()
+    isLoading.value = false
     return { success: true }
   }
 
@@ -144,6 +184,7 @@ export const useAuthStore = defineStore('auth', () => {
     currentUser,
     isAuthModalOpen,
     authModalTab,
+    isLoading,
     isAuthenticated,
     userName,
     login,

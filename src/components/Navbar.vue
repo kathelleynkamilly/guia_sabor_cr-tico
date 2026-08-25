@@ -163,6 +163,8 @@ const restaurantStore = useRestaurantStore()
   transform: translateY(-1px);
 }
 
+
+
 .nav-actions {
   display: flex;
   align-items: center;

@@ -3,6 +3,7 @@ import { RouterView } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import AuthModal from './components/AuthModal.vue'
 import AddRestaurantModal from './components/AddRestaurantModal.vue'
+import ReportFraudModal from './components/ReportFraudModal.vue'
 </script>
 
 <template>
@@ -17,10 +18,10 @@ import AddRestaurantModal from './components/AddRestaurantModal.vue'
       <div class="container footer-content">
         <div class="footer-brand">
           <span class="footer-logo">🍽️ Guia <span class="brand-highlight">Sabor Crítico</span></span>
-          <p class="footer-desc">Curadoria refinada, avaliações sinceras e as melhores experiências gastronômicas.</p>
+          <p class="footer-desc">Curadoria refinada, estabelecimentos auditados contra golpes e avaliações sinceras.</p>
         </div>
         <div class="footer-copy">
-          <p>&copy; {{ new Date().getFullYear() }} Guia Sabor Crítico &bull; O padrão de excelência gastronômica.</p>
+          <p>&copy; {{ new Date().getFullYear() }} Guia Sabor Crítico &bull; Sistema Oficial de Autenticidade & Proteção Anti-Fraude.</p>
         </div>
       </div>
     </footer>
@@ -28,6 +29,7 @@ import AddRestaurantModal from './components/AddRestaurantModal.vue'
     <!-- Modais Globais -->
     <AuthModal />
     <AddRestaurantModal />
+    <ReportFraudModal />
   </div>
 </template>
 

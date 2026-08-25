@@ -35,7 +35,7 @@ watch(
   }
 )
 
-function handleLoginSubmit() {
+async function handleLoginSubmit() {
   errorMessage.value = ''
   successMessage.value = ''
 
@@ -44,7 +44,7 @@ function handleLoginSubmit() {
     return
   }
 
-  const result = authStore.login(loginEmail.value, loginPassword.value)
+  const result = await authStore.login(loginEmail.value, loginPassword.value)
   if (!result.success) {
     errorMessage.value = result.message || 'Falha ao autenticar.'
   } else {
@@ -53,7 +53,7 @@ function handleLoginSubmit() {
   }
 }
 
-function handleRegisterSubmit() {
+async function handleRegisterSubmit() {
   errorMessage.value = ''
   successMessage.value = ''
 
@@ -67,7 +67,7 @@ function handleRegisterSubmit() {
     return
   }
 
-  const result = authStore.register(regName.value, regEmail.value, regPassword.value)
+  const result = await authStore.register(regName.value, regEmail.value, regPassword.value)
   if (!result.success) {
     errorMessage.value = result.message || 'Erro ao realizar cadastro.'
   } else {
